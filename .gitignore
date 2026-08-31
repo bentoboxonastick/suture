@@ -29,7 +29,6 @@ build/
 
 ## Swift Package Manager
 .build/
-Packages/
 Package.pins
 Package.resolved
 .swiftpm/xcode/package.resolved
