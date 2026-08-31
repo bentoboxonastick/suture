@@ -5,6 +5,8 @@
 # Project context & planning documents (as requested)
 context/
 /context/
+.agents/
+/.agents/
 
 # Xcode & Apple Development
 ## User settings & state
