@@ -1,0 +1,71 @@
+# ==============================================================================
+# Suture - .gitignore
+# ==============================================================================
+
+# Project context & planning documents (as requested)
+context/
+/context/
+
+# Xcode & Apple Development
+## User settings & state
+xcuserdata/
+*.xcuserdatad
+*.xcscmblueprint
+*.xcuserstate
+*.xcuserdatad/
+*.xcuserdatad
+
+## Build products & derived data
+DerivedData/
+build/
+*.build
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## Swift Package Manager
+.build/
+Packages/
+Package.pins
+Package.resolved
+.swiftpm/xcode/package.resolved
+.swiftpm/
+
+## CocoaPods (if used)
+Pods/
+Podfile.lock
+
+## Carthage (if used)
+Carthage/Build/
+
+## Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Sensitive Configurations & Secrets
+*.env
+*.env.local
+*.secret
+*.keystore
+*.cer
+*.p12
+*.mobileprovision
+Config.xcconfig
+Secrets.swift
+Secrets.plist
+
+# Backup & Temp Files
+*.swp
+*.bak
+*~
+*.orig
