@@ -1,2 +1,2 @@
 # suture
-Apple-native media streaming hub for Shows, Movies, Live TV, and Music
+Apple-native media streaming hub for Movies, Shows, Live TV, and Music
