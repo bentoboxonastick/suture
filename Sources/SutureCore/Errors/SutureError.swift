@@ -4,7 +4,10 @@ import Foundation
 public enum SutureError: LocalizedError, Identifiable, Sendable {
     case debridExpired(provider: String)
     case debridRateLimit(retryAfterSeconds: Int)
+    case addonManifestInvalid(url: String)
+    case addonResponseMalformed(reason: String)
     case streamUnreachable(url: URL, underlying: String?)
+    case streamPlaybackFailed(reason: String)
     case epgParseFailed(url: URL, reason: String)
     case epgOutOfSync(channel: String)
     case m3uUnreachable(url: URL)
@@ -20,7 +23,10 @@ public enum SutureError: LocalizedError, Identifiable, Sendable {
         switch self {
         case .debridExpired: return "ERR_DEBRID_EXPIRED"
         case .debridRateLimit: return "ERR_DEBRID_RATE_LIMIT"
+        case .addonManifestInvalid: return "ERR_ADDON_MANIFEST_INVALID"
+        case .addonResponseMalformed: return "ERR_ADDON_MALFORMED"
         case .streamUnreachable: return "ERR_STREAM_UNREACHABLE"
+        case .streamPlaybackFailed: return "ERR_STREAM_PLAYBACK_FAILED"
         case .epgParseFailed: return "ERR_EPG_PARSE_FAILED"
         case .epgOutOfSync: return "ERR_EPG_OUT_OF_SYNC"
         case .m3uUnreachable: return "ERR_M3U_UNREACHABLE"
@@ -38,8 +44,14 @@ public enum SutureError: LocalizedError, Identifiable, Sendable {
             return "Your \(provider) account has expired or credentials are invalid."
         case .debridRateLimit(let seconds):
             return "Rate limit exceeded. Please wait \(seconds) seconds before retrying."
+        case .addonManifestInvalid(let url):
+            return "The addon manifest at \(url) is invalid or unreachable."
+        case .addonResponseMalformed(let reason):
+            return "Malformed addon response: \(reason)"
         case .streamUnreachable(let url, let underlying):
             return "Unable to connect to stream at \(url.host ?? "server"). \(underlying ?? "")"
+        case .streamPlaybackFailed(let reason):
+            return "Stream playback error: \(reason)"
         case .epgParseFailed(_, let reason):
             return "Failed to parse TV guide: \(reason)"
         case .epgOutOfSync(let channel):

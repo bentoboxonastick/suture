@@ -61,6 +61,17 @@ public struct SutureShellView: View {
                 }
             )
         }
+        // Video Player Modal
+        .sheet(item: $navigationState.activePlaybackStream) { stream in
+            let engine = AVPlayerEngine()
+            VideoPlayerView(engine: engine) {
+                navigationState.activePlaybackStream = nil
+            }
+            .task {
+                let media = navigationState.selectedMediaItem ?? SutureMediaItem(id: "stream_item", type: .movie, title: stream.name)
+                try? await engine.load(media: media, stream: stream)
+            }
+        }
     }
     
     // MARK: - macOS / iPadOS Split View Layout

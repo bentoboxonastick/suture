@@ -24,11 +24,24 @@ public enum VideoQuality: String, Codable, Sendable, Comparable {
 }
 
 /// Dynamic range capabilities.
-public enum DynamicRange: String, Codable, Sendable {
+public enum DynamicRange: String, Codable, Sendable, Comparable {
     case dolbyVision = "Dolby Vision"
     case hdr10Plus = "HDR10+"
     case hdr10 = "HDR"
     case sdr = "SDR"
+    
+    private var sortOrder: Int {
+        switch self {
+        case .dolbyVision: return 3
+        case .hdr10Plus: return 2
+        case .hdr10: return 1
+        case .sdr: return 0
+        }
+    }
+    
+    public static func < (lhs: DynamicRange, rhs: DynamicRange) -> Bool {
+        lhs.sortOrder < rhs.sortOrder
+    }
 }
 
 /// Audio profile indicators.
