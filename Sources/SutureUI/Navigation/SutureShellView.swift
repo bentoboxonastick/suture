@@ -21,57 +21,93 @@ public struct SutureShellView: View {
             
             // Persistent Bottom MiniPlayer
             MusicPlayerBar(navigationState: navigationState)
+            
+            // MARK: - In-Canvas & In-Window Modal Overlays
+            
+            // 1. Media Detail Modal
+            if let item = navigationState.selectedMediaItem, navigationState.streamPickerItem == nil, navigationState.activePlaybackStream == nil {
+                ZStack {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            navigationState.clearDetail()
+                        }
+                    
+                    MediaDetailSheet(
+                        item: item,
+                        isInWatchlist: false,
+                        onPlay: {
+                            navigationState.presentStreamPicker(for: item)
+                        },
+                        onSelectStream: {
+                            navigationState.presentStreamPicker(for: item)
+                        },
+                        onToggleWatchlist: {},
+                        onClose: {
+                            navigationState.clearDetail()
+                        }
+                    )
+                    .frame(maxWidth: 820, maxHeight: 720)
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    .shadow(color: .black.opacity(0.8), radius: 32)
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.96)))
+                .zIndex(10)
+            }
+            
+            // 2. Stream Picker Modal
+            if let item = navigationState.streamPickerItem, navigationState.activePlaybackStream == nil {
+                ZStack {
+                    Color.black.opacity(0.75)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            navigationState.streamPickerItem = nil
+                        }
+                    
+                    StreamPickerSheet(
+                        item: item,
+                        onSelectStream: { stream in
+                            navigationState.playStream(stream)
+                        },
+                        onSelectExternal: { stream, app in
+                            if let url = app.generateURL(for: stream.streamURL, title: item.title) {
+                                #if canImport(AppKit)
+                                NSWorkspace.shared.open(url)
+                                #elseif canImport(UIKit)
+                                UIApplication.shared.open(url)
+                                #endif
+                            }
+                        },
+                        onClose: {
+                            navigationState.streamPickerItem = nil
+                        }
+                    )
+                    .frame(maxWidth: 680, maxHeight: 620)
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    .shadow(color: .black.opacity(0.8), radius: 32)
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.96)))
+                .zIndex(20)
+            }
+            
+            // 3. Fullscreen Hardware-Accelerated Video Player
+            if let stream = navigationState.activePlaybackStream {
+                let engine = AVPlayerEngine()
+                VideoPlayerView(engine: engine) {
+                    navigationState.activePlaybackStream = nil
+                }
+                .task {
+                    let media = navigationState.selectedMediaItem ?? SutureMediaItem(id: "stream_item", type: .movie, title: stream.name)
+                    try? await engine.load(media: media, stream: stream)
+                }
+                .transition(.opacity)
+                .zIndex(30)
+            }
         }
+        .animation(.easeInOut(duration: 0.25), value: navigationState.selectedMediaItem != nil)
+        .animation(.easeInOut(duration: 0.25), value: navigationState.streamPickerItem != nil)
+        .animation(.easeInOut(duration: 0.25), value: navigationState.activePlaybackStream != nil)
         .preferredColorScheme(.dark)
-        // Detail Sheet Modal
-        .sheet(item: $navigationState.selectedMediaItem) { item in
-            MediaDetailSheet(
-                item: item,
-                isInWatchlist: false,
-                onPlay: {
-                    navigationState.presentStreamPicker(for: item)
-                },
-                onSelectStream: {
-                    navigationState.presentStreamPicker(for: item)
-                },
-                onToggleWatchlist: {},
-                onClose: {
-                    navigationState.clearDetail()
-                }
-            )
-        }
-        // Stream Picker Sheet Modal
-        .sheet(item: $navigationState.streamPickerItem) { item in
-            StreamPickerSheet(
-                item: item,
-                onSelectStream: { stream in
-                    navigationState.playStream(stream)
-                },
-                onSelectExternal: { stream, app in
-                    if let url = app.generateURL(for: stream.streamURL, title: item.title) {
-                        #if canImport(AppKit)
-                        NSWorkspace.shared.open(url)
-                        #elseif canImport(UIKit)
-                        UIApplication.shared.open(url)
-                        #endif
-                    }
-                },
-                onClose: {
-                    navigationState.streamPickerItem = nil
-                }
-            )
-        }
-        // Video Player Modal
-        .sheet(item: $navigationState.activePlaybackStream) { stream in
-            let engine = AVPlayerEngine()
-            VideoPlayerView(engine: engine) {
-                navigationState.activePlaybackStream = nil
-            }
-            .task {
-                let media = navigationState.selectedMediaItem ?? SutureMediaItem(id: "stream_item", type: .movie, title: stream.name)
-                try? await engine.load(media: media, stream: stream)
-            }
-        }
     }
     
     // MARK: - macOS / iPadOS Split View Layout

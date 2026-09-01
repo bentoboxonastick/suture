@@ -20,9 +20,10 @@ public struct VideoPlayerView: View {
         ZStack {
             Color.black.ignoresSafeArea()
             
-            // Native AVPlayer Layer
-            VideoPlayer(player: engine.player)
+            // Clean Hardware Accelerated Video Surface (No OS UI Controls)
+            VideoSurfaceView(player: engine.player)
                 .ignoresSafeArea()
+                .contentShape(Rectangle())
                 .onTapGesture {
                     toggleControls()
                 }
@@ -134,4 +135,22 @@ public struct VideoPlayerView: View {
 #Preview("Video Player View") {
     let engine = AVPlayerEngine()
     VideoPlayerView(engine: engine, onDismiss: {})
+        .task {
+            let sampleMedia = SutureMediaItem(
+                id: "sample_tos",
+                type: .movie,
+                title: "Tears of Steel",
+                subtitle: "Blender Open Sci-Fi Movie",
+                overview: "A group of warriors and scientists gather at the Oude Kerk in Amsterdam to stage a crucial event from the past.",
+                releaseYear: 2012,
+                posterURL: URL(string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg")
+            )
+            let sampleStream = StreamSource(
+                name: "Tears of Steel (Open Source)",
+                streamURL: URL(string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4")!,
+                quality: .fhd1080p,
+                dynamicRange: .sdr
+            )
+            try? await engine.load(media: sampleMedia, stream: sampleStream)
+        }
 }
