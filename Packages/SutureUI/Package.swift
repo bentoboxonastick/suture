@@ -16,13 +16,15 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../SutureCore")
+        .package(path: "../SutureCore"),
+        .package(path: "../PlayerEngineKit")
     ],
     targets: [
         .target(
             name: "SutureUI",
             dependencies: [
-                "SutureCore"
+                "SutureCore",
+                "PlayerEngineKit"
             ],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency")

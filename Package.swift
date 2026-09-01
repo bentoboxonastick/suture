@@ -51,7 +51,7 @@ let package = Package(
         // SutureUI
         .target(
             name: "SutureUI",
-            dependencies: ["SutureCore"],
+            dependencies: ["SutureCore", "PlayerEngineKit"],
             path: "Packages/SutureUI/Sources/SutureUI",
             swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
         ),
