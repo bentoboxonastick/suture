@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "SutureWorkspace",
+    name: "Suture",
     platforms: [
         .macOS(.v15),
         .iOS(.v18),
@@ -24,13 +24,11 @@ let package = Package(
         // SutureCore
         .target(
             name: "SutureCore",
-            path: "Packages/SutureCore/Sources/SutureCore",
             swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
         ),
         .testTarget(
             name: "SutureCoreTests",
             dependencies: ["SutureCore"],
-            path: "Packages/SutureCore/Tests/SutureCoreTests",
             swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
         ),
         
@@ -38,83 +36,11 @@ let package = Package(
         .target(
             name: "SutureStorage",
             dependencies: ["SutureCore"],
-            path: "Packages/SutureStorage/Sources/SutureStorage",
             swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
         ),
         .testTarget(
             name: "SutureStorageTests",
             dependencies: ["SutureStorage"],
-            path: "Packages/SutureStorage/Tests/SutureStorageTests",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        
-        // SutureUI
-        .target(
-            name: "SutureUI",
-            dependencies: ["SutureCore", "PlayerEngineKit"],
-            path: "Packages/SutureUI/Sources/SutureUI",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        .testTarget(
-            name: "SutureUITests",
-            dependencies: ["SutureUI"],
-            path: "Packages/SutureUI/Tests/SutureUITests",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        
-        // StremioKit
-        .target(
-            name: "StremioKit",
-            dependencies: ["SutureCore"],
-            path: "Packages/StremioKit/Sources/StremioKit",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        .testTarget(
-            name: "StremioKitTests",
-            dependencies: ["StremioKit"],
-            path: "Packages/StremioKit/Tests/StremioKitTests",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        
-        // IPTVKit
-        .target(
-            name: "IPTVKit",
-            dependencies: ["SutureCore"],
-            path: "Packages/IPTVKit/Sources/IPTVKit",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        .testTarget(
-            name: "IPTVKitTests",
-            dependencies: ["IPTVKit"],
-            path: "Packages/IPTVKit/Tests/IPTVKitTests",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        
-        // MusicKitAPI
-        .target(
-            name: "MusicKitAPI",
-            dependencies: ["SutureCore"],
-            path: "Packages/MusicKitAPI/Sources/MusicKitAPI",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        .testTarget(
-            name: "MusicKitAPITests",
-            dependencies: ["MusicKitAPI"],
-            path: "Packages/MusicKitAPI/Tests/MusicKitAPITests",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        
-        // TrackingKit
-        .target(
-            name: "TrackingKit",
-            dependencies: ["SutureCore"],
-            path: "Packages/TrackingKit/Sources/TrackingKit",
-            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
-        ),
-        .testTarget(
-            name: "TrackingKitTests",
-            dependencies: ["TrackingKit"],
-            path: "Packages/TrackingKit/Tests/TrackingKitTests",
             swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
         ),
         
@@ -122,13 +48,71 @@ let package = Package(
         .target(
             name: "PlayerEngineKit",
             dependencies: ["SutureCore"],
-            path: "Packages/PlayerEngineKit/Sources/PlayerEngineKit",
             swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
         ),
         .testTarget(
             name: "PlayerEngineKitTests",
             dependencies: ["PlayerEngineKit"],
-            path: "Packages/PlayerEngineKit/Tests/PlayerEngineKitTests",
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        
+        // SutureUI
+        .target(
+            name: "SutureUI",
+            dependencies: ["SutureCore", "PlayerEngineKit"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        .testTarget(
+            name: "SutureUITests",
+            dependencies: ["SutureUI"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        
+        // StremioKit
+        .target(
+            name: "StremioKit",
+            dependencies: ["SutureCore"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        .testTarget(
+            name: "StremioKitTests",
+            dependencies: ["StremioKit"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        
+        // IPTVKit
+        .target(
+            name: "IPTVKit",
+            dependencies: ["SutureCore"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        .testTarget(
+            name: "IPTVKitTests",
+            dependencies: ["IPTVKit"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        
+        // MusicKitAPI
+        .target(
+            name: "MusicKitAPI",
+            dependencies: ["SutureCore"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        .testTarget(
+            name: "MusicKitAPITests",
+            dependencies: ["MusicKitAPI"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        
+        // TrackingKit
+        .target(
+            name: "TrackingKit",
+            dependencies: ["SutureCore"],
+            swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
+        ),
+        .testTarget(
+            name: "TrackingKitTests",
+            dependencies: ["TrackingKit"],
             swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]
         ),
     ]
